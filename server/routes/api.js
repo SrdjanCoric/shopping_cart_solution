@@ -24,8 +24,8 @@ router.put("/products/:id", (req, res) => {
         productId,
         {
           title: title || product.title,
-          price: price || product.price,
-          quantity: quantity || product.quantity,
+          price: price === undefined ? product.price : price,
+          quantity: quantity === undefined ? product.quantity : quantity,
         },
         { new: true }
       );

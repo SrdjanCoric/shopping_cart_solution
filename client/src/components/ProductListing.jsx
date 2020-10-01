@@ -4,10 +4,11 @@ import EditableProduct from "./EditableProduct";
 const ProductListing = (props) => {
   const products = props.products.map((product) => (
     <EditableProduct
-      key={product.id}
+      key={product._id}
       product={product}
       onAddToCart={props.onAddToCart}
       onDeleteProduct={props.onDeleteProduct}
+      onUpdateProduct={props.onUpdateProduct}
     />
   ));
   return (

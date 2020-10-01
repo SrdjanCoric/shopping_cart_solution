@@ -1,33 +1,71 @@
-import React from "react";
+import React, { useState } from "react";
+import ProductForm from "./ProductForm";
 
-const AddProductForm = () => {
+const AddProductForm = (props) => {
+  const [title, setTitle] = useState("");
+  const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [visible, setVisible] = useState(false);
+
+  const handleToggleAddForm = () => {
+    setVisible(!visible);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    let product = {
+      title,
+      price,
+      quantity,
+    };
+
+    props.onAddProduct(product);
+    handleToggleAddForm();
+    resetState();
+  };
+
+  const handleInputChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    switch (name) {
+      case "title":
+        setTitle(value);
+        break;
+      case "price":
+        setPrice(value);
+        break;
+      case "quantity":
+        setQuantity(value);
+        break;
+    }
+  };
+
+  const resetState = () => {
+    setTitle("");
+    setPrice("");
+    setQuantity("");
+    setVisible(false);
+  };
+
+  const addFormClass = visible ? "add-form visible" : "add-form";
+
   return (
-    <div className="add-form">
+    <div className={addFormClass}>
       <p>
-        <a className="button add-product-button">Add A Product</a>
+        <a className="button add-product-button" onClick={handleToggleAddForm}>
+          Add A Product
+        </a>
       </p>
       <h3>Add Product</h3>
-      <form>
-        <div className="input-group">
-          <label htmlFor="product-name">Product Name</label>
-          <input type="text" id="product-name" value="" />
-        </div>
-
-        <div className="input-group">
-          <label htmlFor="product-price">Price</label>
-          <input type="text" id="product-price" value="" />
-        </div>
-
-        <div className="input-group">
-          <label htmlFor="product-quantity">Quantity</label>
-          <input type="text" id="product-quantity" value="" />
-        </div>
-
-        <div className="actions form-actions">
-          <a className="button">Add</a>
-          <a className="button">Cancel</a>
-        </div>
-      </form>
+      <ProductForm
+        title={title}
+        price={price}
+        quantity={quantity}
+        submitText="Add"
+        onSubmit={handleSubmit}
+        onInputChange={handleInputChange}
+      />
     </div>
   );
 };

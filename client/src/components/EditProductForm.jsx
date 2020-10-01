@@ -1,34 +1,58 @@
-import React from "react";
+import React, { useState } from "react";
+import ProductForm from "./ProductForm";
 
-const EditProductForm = () => {
+const EditProductForm = (props) => {
+  const [title, setTitle] = useState(props.product.title || "");
+  const [price, setPrice] = useState(props.product.price || 0);
+  const [quantity, setQuantity] = useState(props.product.quantity || 0);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let editedProduct = {
+      title,
+      price,
+      quantity,
+    };
+    props.onUpdateProduct(editedProduct, props.product._id);
+    props.onToggleEdit();
+  };
+
+  const handleInputChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    switch (name) {
+      case "title":
+        setTitle(value);
+        break;
+      case "price":
+        setPrice(value);
+        break;
+      case "quantity":
+        setQuantity(value);
+        break;
+    }
+  };
+
+  const handleCancelClick = () => {
+    setTitle(props.product.title);
+    setPrice(props.product.price);
+    setQuantity(props.product.quantity);
+    props.onToggleEdit();
+  };
+
   return (
     <div className="edit-form">
       <h3>Edit Product</h3>
-      <form>
-        <div className="input-group">
-          <label for="product-name">Product Name</label>
-          <input
-            type="text"
-            id="product-name"
-            value="Apple 10.5-Inch iPad Pro"
-          />
-        </div>
-
-        <div className="input-group">
-          <label for="product-price">Price</label>
-          <input type="text" id="product-price" value="649.99" />
-        </div>
-
-        <div className="input-group">
-          <label for="product-quantity">Quantity</label>
-          <input type="text" id="product-quantity" value="2" />
-        </div>
-
-        <div className="actions form-actions">
-          <a className="button">Update</a>
-          <a className="button">Cancel</a>
-        </div>
-      </form>
+      <ProductForm
+        title={title}
+        price={price}
+        quantity={quantity}
+        onInputChange={handleInputChange}
+        setQuantity={setQuantity}
+        onSubmit={handleSubmit}
+        submitText="Update"
+        onCancelClick={handleCancelClick}
+      />
     </div>
   );
 };

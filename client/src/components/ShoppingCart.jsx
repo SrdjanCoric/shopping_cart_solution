@@ -3,7 +3,7 @@ import CartItem from "./CartItem";
 
 const ShoppingCart = (props) => {
   const cartItems = props.cart.map((item) => (
-    <CartItem key={item.id} {...item} />
+    <CartItem key={item._id} {...item} />
   ));
 
   const calculateTotal =

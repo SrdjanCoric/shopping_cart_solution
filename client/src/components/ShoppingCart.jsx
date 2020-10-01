@@ -37,7 +37,7 @@ const ShoppingCart = (props) => {
 
               <tr>
                 <td colSpan="3" className="total">
-                  Total: ${calculateTotal}
+                  Total: ${calculateTotal.toFixed(2)}
                 </td>
               </tr>
             </tbody>

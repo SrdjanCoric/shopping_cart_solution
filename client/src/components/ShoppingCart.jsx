@@ -1,20 +1,28 @@
-import React from "react";
+import React, { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import CartItem from "./CartItem";
 
-const ShoppingCart = (props) => {
-  const cartItems = props.cart.map((item) => (
-    <CartItem key={item._id} {...item} />
-  ));
+const ShoppingCart = () => {
+  const dispatch = useDispatch();
+
+  const cart = useSelector((state) => {
+    return state.cart;
+  });
+
+  const checkout = useCallback(() => {
+    dispatch({ type: "CHECKOUT_CART" });
+  }, [dispatch]);
+
+  const cartItems = cart.map((item) => <CartItem key={item._id} {...item} />);
 
   const calculateTotal =
     Math.round(
-      props.cart.reduce((acc, item) => acc + item.price * item.quantity, 0) *
-        100
+      cart.reduce((acc, item) => acc + item.price * item.quantity, 0) * 100
     ) / 100;
   return (
     <header>
       <h1>The Shop!</h1>
-      {props.cart.length === 0 ? (
+      {cart.length === 0 ? (
         <div className="cart">
           <h2>Your Cart</h2>
           <p>Your cart is empty</p>
@@ -42,7 +50,7 @@ const ShoppingCart = (props) => {
               </tr>
             </tbody>
           </table>
-          <a className="button checkout" onClick={props.onCheckout}>
+          <a className="button checkout" onClick={checkout}>
             Checkout
           </a>
         </div>

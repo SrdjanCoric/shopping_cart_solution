@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import axios from "axios";
+import {
+  updateProductAction,
+  deleteProductAction,
+  addToCartSuccess,
+} from "../actions/productActions";
 import EditProductForm from "./EditProductForm";
 
 const EditableProduct = (props) => {
@@ -11,26 +15,15 @@ const EditableProduct = (props) => {
   const dispatch = useDispatch();
 
   const deleteProduct = (id) => {
-    axios
-      .delete(`/api/products/${id}`)
-      .then((response) => response.data)
-      .then(dispatch({ type: "PRODUCT_DELETED", payload: id }));
+    dispatch(deleteProductAction(id));
   };
 
   const addToCart = (product) => {
-    dispatch({ type: "ADDED_TO_CART", product });
+    dispatch(addToCartSuccess(product));
   };
 
   const updateProduct = (product, id, callback) => {
-    axios
-      .put(`/api/products/${id}`, product)
-      .then((response) => response.data)
-      .then((updatedProduct) => {
-        dispatch({ type: "PRODUCT_UPDATED", payload: updatedProduct });
-        if (callback) {
-          callback();
-        }
-      });
+    dispatch(updateProductAction(product, id, callback));
   };
 
   const handleAddToCart = (product) => {

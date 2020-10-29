@@ -1,5 +1,9 @@
 import apiClient from "../lib/ApiClient";
 
+export const addToCartRequest = () => {
+  return { type: "ADD_TO_CART_REQUEST" };
+};
+
 export const addProductSuccess = (newProduct) => {
   return { type: "PRODUCT_ADDED", payload: newProduct };
 };
@@ -57,6 +61,18 @@ export function updateProductAction(product, productId, callback) {
   return function (dispatch) {
     apiClient.updateProduct(productId, product, (newProduct) => {
       dispatch(updateProductSuccess(newProduct));
+    });
+    if (callback) {
+      callback();
+    }
+  };
+}
+
+export function addToCartAction(product, productId, callback) {
+  return function (dispatch) {
+    dispatch(addToCartRequest());
+    apiClient.updateProduct(productId, product, (product) => {
+      dispatch(addToCartSuccess(product));
     });
     if (callback) {
       callback();

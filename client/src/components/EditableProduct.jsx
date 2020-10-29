@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   updateProductAction,
   deleteProductAction,
-  addToCartSuccess,
+  addToCartAction,
 } from "../actions/productActions";
 import EditProductForm from "./EditProductForm";
 
@@ -12,14 +12,12 @@ const EditableProduct = (props) => {
   const { product } = props;
   const isZeroQuantity = product.quantity === 0;
 
+  const loading = useSelector((state) => state.loading);
+
   const dispatch = useDispatch();
 
   const deleteProduct = (id) => {
     dispatch(deleteProductAction(id));
-  };
-
-  const addToCart = (product) => {
-    dispatch(addToCartSuccess(product));
   };
 
   const updateProduct = (product, id, callback) => {
@@ -27,9 +25,9 @@ const EditableProduct = (props) => {
   };
 
   const handleAddToCart = (product) => {
-    if (product.quantity === 0) return;
-    addToCart(product);
-    updateProduct({ quantity: product.quantity - 1 }, product._id);
+    console.log(loading);
+    if (product.quantity === 0 || loading) return;
+    dispatch(addToCartAction({ quantity: product.quantity - 1 }, product._id));
   };
 
   const handleToggleEdit = () => {

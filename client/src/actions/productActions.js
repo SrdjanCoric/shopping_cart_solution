@@ -16,12 +16,20 @@ export const updateProductSuccess = (newProduct) => {
   return { type: "PRODUCT_UPDATED", payload: newProduct };
 };
 
-export const addToCartSuccess = (product) => {
-  return { type: "ADDED_TO_CART", product };
+export const addToCartSuccess = (item) => {
+  return { type: "ADDED_TO_CART", item };
 };
 
 export const productsReceivedSuccess = (products) => {
   return { type: "PRODUCTS_RECEIVED", payload: products };
+};
+
+export const cartItemsReceivedSuccess = (cartItems) => {
+  return { type: "CART_ITEMS_RECEIVED", payload: cartItems };
+};
+
+export const checkoutSuccess = () => {
+  return { type: "CHECKOUT" };
 };
 
 export function fetchProductsAction(callback) {
@@ -40,6 +48,7 @@ export function addProductAction(product, callback) {
     apiClient.addProduct(product, (newProduct) => {
       dispatch(addProductSuccess(newProduct));
     });
+
     if (callback) {
       callback();
     }
@@ -68,11 +77,33 @@ export function updateProductAction(product, productId, callback) {
   };
 }
 
+export function fetchCartItemsAction(callback) {
+  return function (dispatch) {
+    apiClient.getCartItems((cartItems) => {
+      dispatch(cartItemsReceivedSuccess(cartItems));
+    });
+    if (callback) {
+      callback();
+    }
+  };
+}
+
 export function addToCartAction(product, productId, callback) {
   return function (dispatch) {
     dispatch(addToCartRequest());
-    apiClient.updateProduct(productId, product, (product) => {
+    apiClient.addToCart(productId, product, (product) => {
       dispatch(addToCartSuccess(product));
+    });
+    if (callback) {
+      callback();
+    }
+  };
+}
+
+export function checkoutAction(callback) {
+  return function (dispatch) {
+    apiClient.checkout(() => {
+      dispatch(checkoutSuccess());
     });
     if (callback) {
       callback();

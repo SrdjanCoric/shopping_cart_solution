@@ -16,7 +16,7 @@ export const products = (state = [], action) => {
       });
     case "ADDED_TO_CART":
       return state.map((product) => {
-        if (product._id === action.product._id) {
+        if (product._id === action.item.productId) {
           const quantity = product.quantity === 0 ? 0 : product.quantity - 1;
           return Object.assign({}, product, { quantity });
         } else {

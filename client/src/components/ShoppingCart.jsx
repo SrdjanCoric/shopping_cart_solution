@@ -1,6 +1,10 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CartItem from "./CartItem";
+import {
+  fetchCartItemsAction,
+  checkoutAction,
+} from "../actions/productActions";
 
 const ShoppingCart = () => {
   const dispatch = useDispatch();
@@ -9,8 +13,12 @@ const ShoppingCart = () => {
     return state.cart;
   });
 
+  useEffect(() => {
+    dispatch(fetchCartItemsAction());
+  }, []);
+
   const checkout = useCallback(() => {
-    dispatch({ type: "CHECKOUT_CART" });
+    dispatch(checkoutAction());
   }, [dispatch]);
 
   const cartItems = cart.map((item) => <CartItem key={item._id} {...item} />);

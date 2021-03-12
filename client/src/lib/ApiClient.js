@@ -34,6 +34,27 @@ const apiClient = {
       .then(callback)
       .catch((err) => console.log(err));
   },
+  getCartItems: function (callback) {
+    return axios
+      .get(routes.GET_CART_ITEMS)
+      .then((response) => response.data)
+      .then(callback)
+      .catch((err) => console.log(err));
+  },
+  addToCart: function (id, product, callback) {
+    return axios
+      .post(routes.ADD_TO_CART, { productId: id, product })
+      .then((response) => response.data)
+      .then(callback)
+      .catch((err) => console.log(err));
+  },
+  checkout: function (callback) {
+    return axios
+      .get(routes.CHECKOUT)
+      .then((response) => response.data)
+      .then(callback)
+      .catch((err) => console.log(err));
+  },
 };
 
 export default apiClient;

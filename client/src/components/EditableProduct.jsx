@@ -25,9 +25,15 @@ const EditableProduct = (props) => {
   };
 
   const handleAddToCart = (product) => {
-    console.log(loading);
     if (product.quantity === 0 || loading) return;
-    dispatch(addToCartAction({ quantity: product.quantity - 1 }, product._id));
+    dispatch(
+      addToCartAction(
+        {
+          quantity: product.quantity - 1,
+        },
+        product._id
+      )
+    );
   };
 
   const handleToggleEdit = () => {

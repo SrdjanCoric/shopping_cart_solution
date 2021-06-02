@@ -17,14 +17,14 @@ const AddProductForm = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    let product = {
+    let cartItem = {
       title,
       price,
       quantity,
     };
 
     dispatch(
-      addProductAction(product, () => {
+      addProductAction(cartItem, () => {
         handleToggleAddForm();
         resetState();
       })

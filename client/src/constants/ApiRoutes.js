@@ -7,4 +7,4 @@ export const deleteProduct = (id) => `/api/products/${id}`;
 export const updateProduct = (id) => `/api/products/${id}`;
 export const ADD_TO_CART = "/api/cart";
 export const GET_CART_ITEMS = "/api/cart";
-export const CHECKOUT = "/api/checkout";
+export const CHECKOUT = "/api/cart/checkout";

@@ -88,11 +88,13 @@ export function fetchCartItemsAction(callback) {
   };
 }
 
-export function addToCartAction(product, productId, callback) {
+export function addToCartAction(cartItem, productId, callback) {
   return function (dispatch) {
     dispatch(addToCartRequest());
-    apiClient.addToCart(productId, product, (product) => {
-      dispatch(addToCartSuccess(product));
+    apiClient.updateProduct(productId, cartItem, (updatedProduct) => {
+      apiClient.addToCart(updatedProduct, (item) => {
+        dispatch(addToCartSuccess(item));
+      });
     });
     if (callback) {
       callback();

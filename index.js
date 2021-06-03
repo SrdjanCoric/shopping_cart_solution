@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const apiRoutes = require("./routes/api");
 const uiRoutes = require("./routes/ui");
+const path = require("path");
 require("dotenv").config();
 
 const app = express();
@@ -30,11 +31,7 @@ app.use((req, res, next) => {
   next();
 });
 
-if (process.env.NODE_ENV === "development") {
-  app.use(express.static(__dirname + "/public"));
-} else {
-  app.use(express.static(path.join(__dirname, "client", "build")));
-}
+app.use(express.static(path.join(__dirname, "client", "build")));
 
 app.use(bodyParser.json());
 

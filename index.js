@@ -20,8 +20,6 @@ mongoose
 
 mongoose.Promise = global.Promise;
 
-app.use(express.static(path.join(__dirname, "client", "build")));
-
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "*");
@@ -32,7 +30,11 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.static(__dirname + "/public"));
+if (process.env.NODE_ENV === "development") {
+  app.use(express.static(__dirname + "/public"));
+} else {
+  app.use(express.static(path.join(__dirname, "client", "build")));
+}
 
 app.use(bodyParser.json());
 
@@ -42,6 +44,10 @@ app.use("/ui", uiRoutes);
 app.use((err, req, res, next) => {
   console.log(err);
   next();
+});
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 
 app.listen(port, () => {

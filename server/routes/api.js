@@ -44,7 +44,8 @@ router.put("/products/:id", (req, res) => {
     })
     .then((_) => {
       res.json(req.body.product);
-    });
+    })
+    .catch((err) => console.log(err));
 });
 
 router.delete("/products/:id", (req, res, next) => {
@@ -60,52 +61,46 @@ router.delete("/products/:id", (req, res, next) => {
 });
 
 router.post("/cart", (req, res) => {
-  const { productId, product } = req.body;
-
-  Product.findByIdAndUpdate(
+  const { productId, title, price } = req.body;
+  CartItem.findOne({
     productId,
-    {
-      quantity: product.quantity,
-    },
-    { new: true }
-  ).then((updatedProduct) => {
-    CartItem.findOne({
-      productId: productId,
+  })
+    .then((item) => {
+      if (!item) {
+        return CartItem.create({
+          title: title,
+          price: price,
+          quantity: 1,
+          productId,
+        });
+      } else {
+        return CartItem.findOneAndUpdate(
+          { productId },
+          {
+            quantity: item.quantity + 1,
+          },
+          { new: true }
+        );
+      }
     })
-      .then((item) => {
-        if (!item) {
-          return CartItem.create({
-            title: updatedProduct.title,
-            price: updatedProduct.price,
-            quantity: 1,
-            productId,
-          });
-        } else {
-          return CartItem.findOneAndUpdate(
-            { productId: updatedProduct._id },
-            {
-              quantity: item.quantity + 1,
-            },
-            { new: true }
-          );
-        }
-      })
-      .then((item) => {
-        res.json(item);
-      });
-  });
+    .then((item) => {
+      res.json(item);
+    })
+    .catch((err) => next(err));
 });
 
-router.get("/checkout", (req, res) => {
-  CartItem.deleteMany({}).then(() => {
-    res.json();
-  });
+router.post("/cart/checkout", (req, res) => {
+  CartItem.deleteMany({})
+    .then(() => {
+      res.json();
+    })
+    .catch((err) => next(err));
 });
 
 router.get("/cart", (req, res, next) => {
   CartItem.find({})
     .then((cartItems) => res.json(cartItems))
-    .catch(next);
+    .catch((err) => next(err));
 });
 
 module.exports = router;

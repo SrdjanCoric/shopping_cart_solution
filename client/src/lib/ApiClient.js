@@ -41,16 +41,16 @@ const apiClient = {
       .then(callback)
       .catch((err) => console.log(err));
   },
-  addToCart: function (id, product, callback) {
+  addToCart: function (productId, title, price, callback) {
     return axios
-      .post(routes.ADD_TO_CART, { productId: id, product })
+      .post(routes.ADD_TO_CART, { productId, title, price })
       .then((response) => response.data)
       .then(callback)
       .catch((err) => console.log(err));
   },
   checkout: function (callback) {
     return axios
-      .get(routes.CHECKOUT)
+      .post(routes.CHECKOUT)
       .then((response) => response.data)
       .then(callback)
       .catch((err) => console.log(err));

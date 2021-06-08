@@ -25,21 +25,6 @@ export const cart = (state = [], action) => {
       return state;
     case "PRODUCT_DELETED":
       return state.filter((prod) => prod.productId !== action.payload);
-    case "PRODUCT_UPDATED":
-      return state.map((cartItem) => {
-        if (cartItem.productId === action.payload._id) {
-          let updatedProduct = {
-            title: action.payload.title || cartItem.title,
-            price:
-              action.payload.price === undefined
-                ? cartItem.price
-                : action.payload.price,
-          };
-          return Object.assign({}, cartItem, updatedProduct);
-        } else {
-          return cartItem;
-        }
-      });
     case "CART_ITEMS_RECEIVED":
       return action.payload;
     case "CHECKOUT":

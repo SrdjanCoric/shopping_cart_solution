@@ -32,10 +32,14 @@ app.use((req, res, next) => {
 
 app.use(express.static(__dirname + "/public"));
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 app.use("/api", apiRoutes);
 app.use("/ui", uiRoutes);
+
+app.use(function (req,res,next){
+	res.status(404).send('Unable to find the requested resource!');
+});
 
 app.use((err, req, res, next) => {
   console.log(err);

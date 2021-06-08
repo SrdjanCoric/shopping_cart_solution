@@ -91,7 +91,7 @@ export function fetchCartItemsAction(callback) {
 export function addToCartAction(cartItem, productId, callback) {
   return function (dispatch) {
     dispatch(addToCartRequest());
-    apiClient.updateProduct(productId, product, (updatedProduct) => {
+    apiClient.updateProduct(productId, cartItem, (updatedProduct) => {
       apiClient.addToCart(
         productId,
         updatedProduct.title,

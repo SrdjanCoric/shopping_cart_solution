@@ -91,10 +91,15 @@ export function fetchCartItemsAction(callback) {
 export function addToCartAction(cartItem, productId, callback) {
   return function (dispatch) {
     dispatch(addToCartRequest());
-    apiClient.updateProduct(productId, cartItem, (updatedProduct) => {
-      apiClient.addToCart(updatedProduct, (item) => {
-        dispatch(addToCartSuccess(item));
-      });
+    apiClient.updateProduct(productId, product, (updatedProduct) => {
+      apiClient.addToCart(
+        productId,
+        updatedProduct.title,
+        updatedProduct.price,
+        (cartItem) => {
+          dispatch(addToCartSuccess(cartItem));
+        }
+      );
     });
     if (callback) {
       callback();

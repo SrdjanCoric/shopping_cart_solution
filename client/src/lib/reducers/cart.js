@@ -23,6 +23,11 @@ export const cart = (state = [], action) => {
         return updatedCart;
       }
       return state;
+<<<<<<< HEAD
+=======
+    case "PRODUCT_DELETED":
+      return state.filter((prod) => prod.productId !== action.payload);
+>>>>>>> add_to_cart
     case "CART_ITEMS_RECEIVED":
       return action.payload;
     case "CHECKOUT":

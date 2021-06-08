@@ -41,19 +41,9 @@ const apiClient = {
       .then(callback)
       .catch((err) => console.log(err));
   },
-<<<<<<< HEAD
-  addToCart: function (product, callback) {
-    return axios
-      .post(routes.ADD_TO_CART, {
-        productId: product.id,
-        title: product.title,
-        price: product.price,
-      })
-=======
   addToCart: function (productId, title, price, callback) {
     return axios
       .post(routes.ADD_TO_CART, { productId, title, price })
->>>>>>> add_to_cart
       .then((response) => response.data)
       .then(callback)
       .catch((err) => console.log(err));
